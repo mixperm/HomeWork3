@@ -181,7 +181,7 @@ namespace HomeWork3
         public Fraction(double num, double den)
         {
             if (den <= 0)
-                throw new Exception("Знаменатель должен быть больше нуля!");
+                throw new ArgumentException("Знаменатель не может быть меньше 0");
             this.num = num;
             this.den = den;
         }
