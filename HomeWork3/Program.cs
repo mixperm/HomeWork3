@@ -14,6 +14,11 @@ namespace HomeWork3
         public double im;
         public double re;
 
+        /// <summary>
+        /// Сложение комплексных чисел
+        /// </summary>
+        /// <param name="x2"></param>
+        /// <returns>Комплексное число</returns>
         public Complex Plus(Complex x2)
         {
             Complex x3 = new Complex();
@@ -21,6 +26,12 @@ namespace HomeWork3
             x3.re = x2.re + this.re;
             return x3;
         }
+
+        /// <summary>
+        /// Разность комплексных чисел
+        /// </summary>
+        /// <param name="x2"></param>
+        /// <returns>Комплексное число</returns>
         public Complex Minus(Complex x2)
         {
             Complex x3 = new Complex();
@@ -28,6 +39,12 @@ namespace HomeWork3
             x3.re = this.re - x2.re;
             return x3;
         }
+
+        /// <summary>
+        /// Умножение комплексных чисел
+        /// </summary>
+        /// <param name="x2"></param>
+        /// <returns>Комплексное число</returns>
         public Complex Multi(Complex x2)
         {
             Complex x3 = new Complex();
@@ -36,6 +53,11 @@ namespace HomeWork3
             
             return x3;
         }
+
+        /// <summary>
+        /// Вывод комплексного числа в строку
+        /// </summary>
+        /// <returns>Строка</returns>
         public override string ToString()
         {
             string zn;
@@ -120,6 +142,123 @@ namespace HomeWork3
         }
     }
 
+    class Fraction
+    {
+        public double num;
+        public double den;
+
+        /// <summary>
+        /// Наибольший общий делитель
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>Наибольший общий делитель</returns>
+        static double GCD(double a, double b)
+        {
+            if (a < 0)
+                a = -a;
+            if (b < 0)
+                b = -b;
+            while (b != 0)
+            {
+                var t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
+        }
+
+        public Fraction()
+        {
+
+        }
+
+        /// <summary>
+        /// Дробь
+        /// </summary>
+        /// <param name="num">Числитель</param>
+        /// <param name="den">Знаменатель</param>
+        public Fraction(double num, double den)
+        {
+            if (den <= 0)
+                throw new Exception("Знаменатель должен быть больше нуля!");
+            this.num = num;
+            this.den = den;
+        }
+
+        /// <summary>
+        /// Сложение дробей
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns>Дробь</returns>
+        public Fraction Plus(Fraction b)
+        {
+            var cn = this.num * b.den + this.den * b.num;
+            var cd = this.den * b.den;
+            var _GCD = GCD(cn, cd);
+            Fraction c = new Fraction(cn/_GCD, cd/_GCD);
+            return c;
+        }
+
+        /// <summary>
+        /// Вычитание дробей
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns>Дробь</returns>
+        public Fraction Minus(Fraction b)
+        {
+            var cn = this.num * b.den + this.den * -b.num;
+            var cd = this.den * b.den;
+            var _GCD = GCD(cn, cd);
+            Fraction c = new Fraction(cn / _GCD, cd / _GCD);
+            return c;
+        }
+
+        /// <summary>
+        /// Умножение дробей
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns>Дробь</returns>
+        public Fraction Multi(Fraction b)
+        {
+            var cn = this.num * b.num;
+            var cd = this.den * b.den;
+            var _GCD = GCD(cn, cd);
+            Fraction c = new Fraction(cn / _GCD, cd / _GCD);
+            return c;
+        }
+
+        /// <summary>
+        /// Деление дробей
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns>Дробь</returns>
+        public Fraction Div(Fraction b)
+        {
+            var cn = this.num * b.den;
+            var cd = this.den * b.num;
+            if (cd < 0)
+            {
+                cn = -cn;
+                cd = -cd;
+            }
+            var _GCD = GCD(cn, cd);
+            Fraction c = new Fraction(cn / _GCD, cd / _GCD);
+            return c;
+        }
+
+        /// <summary>
+        /// Вывод дроби в строку
+        /// </summary>
+        /// <returns>Строка</returns>
+        public override string ToString()
+        {
+            if (this.den == 1)
+                return "" + this.num;
+            else
+                return "" + this.num + "/" + this.den;
+        }
+    }
     class Program
     {
         static void Main(string[] args)
@@ -176,6 +315,54 @@ namespace HomeWork3
             Console.WriteLine("Результат умножения комплексных чисел: {0}", sresult3.ToString());
 
             Console.ReadKey();
+            #endregion
+
+            #region Задание 2
+            /*
+            2.  а) С клавиатуры вводятся числа, пока не будет введен 0 (каждое число в новой строке). Требуется подсчитать сумму всех нечетных положительных чисел. Сами числа и сумму вывести на экран, используя tryParse;
+                б) Добавить обработку исключительных ситуаций на то, что могут быть введены некорректные данные. При возникновении ошибки вывести сообщение. Напишите соответствующую функцию
+            */
+
+            Console.Clear();
+            Console.WriteLine("Вводите числа. Для окончания введите 0.");
+            int i = -1;
+            int s = 0;
+            do
+                if (int.TryParse(Console.ReadLine(), out i))
+                {
+                    if (i > 0 && i % 2 > 0)
+                        s = s + i;
+                }
+                else
+                {
+                    Console.WriteLine("Введено не верное число. Требуется ввод целого числа.");
+                    i = -1;
+                }
+            while (i != 0);
+            Console.WriteLine($"Сумма положительных нечетных чисел равна {s}");
+            Console.ReadKey();
+            #endregion
+
+            #region Задание 3
+            /*
+            3. *Описать класс дробей - рациональных чисел, являющихся отношением двух целых чисел. 
+            Предусмотреть методы сложения, вычитания, умножения и деления дробей. 
+            Написать программу, демонстрирующую все разработанные элементы класса.
+            */
+
+            Console.Clear();
+            var a = new Fraction(1, 2);
+            var b = new Fraction(2, 3);
+            var c1 = a.Plus(b);
+            Console.WriteLine($"Результат сложения дробей {a} и {b} равна {c1}");
+            var c2 = a.Minus(b);
+            Console.WriteLine($"Результат вычитания дробей {a} и {b} равна {c2}");
+            var c3 = a.Multi(b);
+            Console.WriteLine($"Результат умножения дробей {a} и {b} равна {c3}");
+            var c4 = a.Div(b);
+            Console.WriteLine($"Результат деления дробей {a} и {b} равна {c4}");
+            Console.ReadKey();
+
             #endregion
         }
     }
